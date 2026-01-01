@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy New Year 2026 - My Love ❤️</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Opening Scene -->
+    <section id="landing" class="landing-section">
+      <canvas id="particles-canvas"></canvas>
+      <div class="stars"></div>
+      <div class="floating-hearts" id="floating-hearts"></div>
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <span class="glow-text">Happy New Year, My Love</span>
+          <span class="heart-emoji">❤️</span>
+        </h1>
+        <div class="sparkles"></div>
+      </div>
+      <div class="scroll-indicator">
+        <div class="mouse"></div>
+      </div>
+    </section>
+
+    <!-- Interactive Message Section -->
+    <section id="message-section" class="message-section">
+      <div class="container">
+        <button id="message-btn" class="romantic-btn">
+          Nhấn vào đây nhé 💌
+        </button>
+        <div id="message-text" class="message-text hidden"></div>
+      </div>
+    </section>
+
+    <!-- Memory / Love Section -->
+    <section id="memories-section" class="memories-section">
+      <div class="container">
+        <h2 class="section-title">Những khoảnh khắc của chúng ta 💕</h2>
+        <div class="memory-cards">
+          <div class="memory-card" data-index="0">
+            <div class="card-content">
+              <div class="heart-icon">💖</div>
+              <p>Em là điều tuyệt vời nhất đã đến với anh trong năm qua</p>
+            </div>
+          </div>
+          <div class="memory-card" data-index="1">
+            <div class="card-content">
+              <div class="heart-icon">✨</div>
+              <p>Mỗi ngày bên em đều là một món quà</p>
+            </div>
+          </div>
+          <div class="memory-card" data-index="2">
+            <div class="card-content">
+              <div class="heart-icon">🌙</div>
+              <p>Anh muốn cùng em đi qua mọi năm mới phía trước</p>
+            </div>
+          </div>
+          <div class="memory-card" data-index="3">
+            <div class="card-content">
+              <div class="heart-icon">🎆</div>
+              <p>Tình yêu của chúng ta đẹp hơn cả pháo hoa</p>
+            </div>
+          </div>
+          <div class="memory-card" data-index="4">
+            <div class="card-content">
+              <div class="heart-icon">💫</div>
+              <p>Năm mới, anh muốn tạo thêm nhiều kỷ niệm với em</p>
+            </div>
+          </div>
+          <div class="memory-card" data-index="5">
+            <div class="card-content">
+              <div class="heart-icon">🌹</div>
+              <p>Em là lý do anh luôn mỉm cười mỗi sáng thức dậy</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Photo & Video Gallery Section -->
+    <section id="gallery-section" class="gallery-section">
+      <div class="container">
+        <h2 class="section-title">Những kỷ niệm đẹp của chúng ta 📸💕</h2>
+        <p class="gallery-subtitle">Những khoảnh khắc đáng nhớ cùng nhau</p>
+        <div class="gallery-grid" id="gallery-grid">
+          <!-- Images và videos sẽ được thêm vào đây bằng JavaScript -->
+          <!-- Images and videos will be added here via JavaScript -->
+        </div>
+        <div class="gallery-placeholder" id="gallery-placeholder">
+          <div class="placeholder-icon">📷</div>
+          <p>Thêm hình ảnh và video vào thư mục <code>assets/images/</code></p>
+          <p class="placeholder-hint">
+            Hỗ trợ: .jpg, .jpeg, .png, .gif, .mp4, .webm
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lightbox Modal for Fullscreen View -->
+    <div id="lightbox" class="lightbox hidden">
+      <button class="lightbox-close" id="lightbox-close">&times;</button>
+      <button class="lightbox-prev" id="lightbox-prev">&#8249;</button>
+      <button class="lightbox-next" id="lightbox-next">&#8250;</button>
+      <div class="lightbox-content">
+        <img id="lightbox-image" src="" alt="" class="hidden" />
+        <video id="lightbox-video" controls class="hidden">
+          <source src="" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+
+    <!-- Surprise Effect Section -->
+    <section id="surprise-section" class="surprise-section">
+      <div class="container">
+        <button id="surprise-btn" class="romantic-btn surprise-btn">
+          Bất ngờ cho em ✨
+        </button>
+      </div>
+      
+      <!-- Cinematic Surprise Container -->
+      <div id="surprise-cinematic" class="surprise-cinematic hidden">
+        <!-- Stage 1: Tension Build -->
+        <div id="surprise-stage1" class="surprise-stage hidden">
+          <div class="surprise-overlay-dark"></div>
+          <div class="surprise-heartbeat"></div>
+          <p class="surprise-stage1-text">Trước khi năm mới đến… anh có điều muốn nói</p>
+        </div>
+        
+        <!-- Stage 2: Emotional Reveal -->
+        <div id="surprise-stage2" class="surprise-stage hidden">
+          <div class="surprise-zoom-container">
+            <canvas id="surprise-particles-canvas"></canvas>
+            <div class="surprise-glow-heart">❤️</div>
+            <p class="surprise-stage2-text" id="surprise-stage2-text"></p>
+          </div>
+        </div>
+        
+        <!-- Stage 3: Explosion -->
+        <div id="surprise-stage3" class="surprise-stage hidden">
+          <canvas id="surprise-fireworks-canvas"></canvas>
+          <div class="surprise-golden-burst"></div>
+          <div id="surprise-hearts-container"></div>
+          <div id="surprise-sparkles-container"></div>
+        </div>
+        
+        <!-- Stage 4: Final Promise -->
+        <div id="surprise-stage4" class="surprise-stage hidden">
+          <canvas id="surprise-final-fireworks"></canvas>
+          <div class="surprise-final-message">
+            <p class="surprise-final-text">Năm mới này, anh vẫn muốn nắm tay em — và là nhiều năm sau nữa ❤️</p>
+            <p class="surprise-final-subtitle">Happy New Year, My Love</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final Scene -->
+    <section id="final-section" class="final-section">
+      <div class="final-hearts" id="final-hearts"></div>
+      <div class="container">
+        <div id="countdown" class="countdown hidden">
+          <div class="countdown-number">3</div>
+          <div class="countdown-number">2</div>
+          <div class="countdown-number">1</div>
+        </div>
+        <div id="final-message" class="final-message hidden">
+          <h2 class="final-title">Chúc mừng năm mới 2026 🎉</h2>
+          <p class="final-subtitle">Yêu em nhiều lắm! ❤️</p>
+        </div>
+      </div>
+    </section>
+
+    <script src="gallery-list.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
