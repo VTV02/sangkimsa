@@ -276,6 +276,7 @@ class SurpriseController {
     constructor() {
         this.surpriseBtn = document.getElementById('surprise-btn');
         this.cinematic = document.getElementById('surprise-cinematic');
+        this.closeBtn = document.getElementById('surprise-close-btn');
         this.stage1 = document.getElementById('surprise-stage1');
         this.stage2 = document.getElementById('surprise-stage2');
         this.stage3 = document.getElementById('surprise-stage3');
@@ -331,6 +332,10 @@ class SurpriseController {
         
         if (this.surpriseBtn) {
             this.surpriseBtn.addEventListener('click', () => this.start());
+        }
+        
+        if (this.closeBtn) {
+            this.closeBtn.addEventListener('click', () => this.closeSurprise());
         }
     }
     
@@ -443,10 +448,36 @@ class SurpriseController {
         if (this.stage3) this.stage3.classList.add('hidden');
         if (this.stage4) this.stage4.classList.remove('hidden');
         
+        // Show close button after a delay
+        setTimeout(() => {
+            if (this.closeBtn) this.closeBtn.classList.remove('hidden');
+        }, 3000);
+        
         // Slower fireworks
         this.createFinalFireworks();
         
-        // Message already animated via CSS
+        // Auto close after 12 seconds and scroll to mystery boxes
+        setTimeout(() => {
+            this.closeSurprise();
+        }, 12000);
+    }
+    
+    closeSurprise() {
+        if (this.cinematic) {
+            this.cinematic.classList.add('hidden');
+        }
+        if (this.closeBtn) {
+            this.closeBtn.classList.add('hidden');
+        }
+        // Stop all animations
+        this.currentStage = 0;
+        // Scroll to mystery boxes section
+        const nextSection = document.getElementById('mystery-boxes-section');
+        if (nextSection) {
+            setTimeout(() => {
+                nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 500);
+        }
     }
     
     // ========== HELPER FUNCTIONS ==========
