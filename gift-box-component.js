@@ -92,6 +92,7 @@ class GiftBox {
         
         this.contentElement = content;
         this.particlesElement = particles;
+        this.lightBurstElement = lightBurst;
     }
     
     setupContent() {
@@ -126,27 +127,43 @@ class GiftBox {
     setupEvents() {
         if (this.isOpened) return;
         
+        // Bind handlers if not already bound
+        if (!this.handleTouchStart) {
+            this.handleTouchStart = (e) => {
+                if (this.isOpened || this.isOpening) return;
+                e.preventDefault();
+                e.stopPropagation();
+                this.handleTap();
+            };
+        }
+        
+        if (!this.handleClick) {
+            this.handleClick = (e) => {
+                if (this.isOpened || this.isOpening) return;
+                e.preventDefault();
+                e.stopPropagation();
+                this.handleTap();
+            };
+        }
+        
         // Touch events
-        this.container.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            this.handleTap();
-        }, { passive: false });
+        this.container.addEventListener('touchstart', this.handleTouchStart, { passive: false });
         
         // Click events
-        this.container.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.handleTap();
-        });
+        this.container.addEventListener('click', this.handleClick);
         
         // Prevent double-tap zoom
-        let lastTouchEnd = 0;
-        this.container.addEventListener('touchend', (e) => {
-            const now = Date.now();
-            if (now - lastTouchEnd <= 300) {
-                e.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
+        if (!this.lastTouchEnd) {
+            this.lastTouchEnd = 0;
+            this.handleTouchEnd = (e) => {
+                const now = Date.now();
+                if (now - this.lastTouchEnd <= 300) {
+                    e.preventDefault();
+                }
+                this.lastTouchEnd = now;
+            };
+            this.container.addEventListener('touchend', this.handleTouchEnd, false);
+        }
     }
     
     handleTap() {
