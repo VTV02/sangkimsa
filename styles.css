@@ -926,6 +926,32 @@ body {
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     animation: scaleIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     border: 3px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+}
+
+.congratulations-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    font-size: 2rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    line-height: 1;
+    padding: 0;
+}
+
+.congratulations-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
 }
 
 @keyframes scaleIn {

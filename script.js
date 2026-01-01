@@ -1196,6 +1196,14 @@ class MysteryBoxesController {
             this.congratulations.classList.remove('hidden');
             
             // Close button functionality
+            const closeBtn = document.getElementById('congratulations-close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    this.congratulations.classList.add('hidden');
+                });
+            }
+            
+            // Close when clicking outside
             this.congratulations.addEventListener('click', (e) => {
                 if (e.target === this.congratulations) {
                     this.congratulations.classList.add('hidden');
