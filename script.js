@@ -1035,6 +1035,186 @@ if (document.readyState === 'loading') {
     loadGallery();
 }
 
+// ===========================================
+// MYSTERY BOXES CONTROLLER
+// ===========================================
+
+class MysteryBoxesController {
+    constructor() {
+        this.boxesGrid = document.getElementById('mystery-boxes-grid');
+        this.congratulations = document.getElementById('mystery-congratulations');
+        this.totalBoxes = 9;
+        this.boxContents = [];
+        this.openedBoxes = new Set();
+        this.qrBoxIndex = -1;
+        this.qrFound = false;
+        
+        // Love messages (Vietnamese)
+        this.loveMessages = [
+            "Em là ánh sáng trong cuộc đời anh ❤️",
+            "Mỗi ngày bên em đều là một món quà 💕",
+            "Anh yêu em nhiều hơn em nghĩ 💖",
+            "Em làm trái tim anh hạnh phúc mỗi ngày 💗",
+            "Cảm ơn em vì đã đến với anh ✨",
+            "Anh muốn cùng em đi qua mọi mùa xuân 🌸",
+            "Em là lý do anh luôn mỉm cười 😊",
+            "Tình yêu của chúng ta đẹp như hoa hồng 🌹"
+        ];
+        
+        this.init();
+    }
+    
+    init() {
+        this.generateBoxContents();
+        this.createBoxes();
+    }
+    
+    generateBoxContents() {
+        // Randomly select one box for QR code
+        this.qrBoxIndex = Math.floor(Math.random() * this.totalBoxes);
+        
+        // Fill other boxes with messages (can add images later)
+        for (let i = 0; i < this.totalBoxes; i++) {
+            if (i === this.qrBoxIndex) {
+                this.boxContents.push({ type: 'qr' });
+            } else {
+                const randomMessage = this.loveMessages[Math.floor(Math.random() * this.loveMessages.length)];
+                this.boxContents.push({ type: 'message', content: randomMessage });
+            }
+        }
+        
+        // Shuffle array to randomize positions
+        for (let i = this.boxContents.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [this.boxContents[i], this.boxContents[j]] = [this.boxContents[j], this.boxContents[i]];
+        }
+    }
+    
+    createBoxes() {
+        if (!this.boxesGrid) return;
+        
+        for (let i = 0; i < this.totalBoxes; i++) {
+            const box = document.createElement('div');
+            box.className = 'mystery-box';
+            box.dataset.index = i;
+            
+            const front = document.createElement('div');
+            front.className = 'mystery-box-front';
+            
+            const back = document.createElement('div');
+            back.className = 'mystery-box-back';
+            
+            const content = document.createElement('div');
+            content.className = 'mystery-box-content';
+            
+            const boxData = this.boxContents[i];
+            
+            if (boxData.type === 'qr') {
+                content.classList.add('qr');
+                content.innerHTML = `
+                    <div class="mystery-qr-code">
+                        <img src="assets/qr/qr-code.png" alt="QR Code">
+                    </div>
+                    <div class="mystery-qr-text">Quét mã này để lì xì cho bé nha ❤️</div>
+                `;
+            } else if (boxData.type === 'message') {
+                content.classList.add('message');
+                content.innerHTML = `
+                    <div class="heart-emoji">💝</div>
+                    <div>${boxData.content}</div>
+                `;
+            }
+            
+            back.appendChild(content);
+            box.appendChild(front);
+            box.appendChild(back);
+            
+            box.addEventListener('click', () => this.handleBoxClick(i, box));
+            
+            this.boxesGrid.appendChild(box);
+        }
+    }
+    
+    handleBoxClick(index, boxElement) {
+        if (this.openedBoxes.has(index) || boxElement.classList.contains('opened')) {
+            return;
+        }
+        
+        this.openedBoxes.add(index);
+        boxElement.classList.add('flipping', 'opened');
+        
+        const boxData = this.boxContents[index];
+        
+        // Check if QR box
+        if (boxData.type === 'qr' && !this.qrFound) {
+            this.qrFound = true;
+            setTimeout(() => {
+                this.createConfetti();
+                setTimeout(() => {
+                    this.showCongratulations();
+                }, 500);
+            }, 600);
+        }
+        
+        // Optional: disable remaining boxes after QR found
+        // Uncomment to enable:
+        // if (this.qrFound) {
+        //     setTimeout(() => {
+        //         document.querySelectorAll('.mystery-box:not(.opened)').forEach(box => {
+        //             box.style.pointerEvents = 'none';
+        //             box.style.opacity = '0.5';
+        //         });
+        //     }, 3000);
+        // }
+    }
+    
+    createConfetti() {
+        const colors = ['#ffd700', '#ff6b9d', '#ff6348', '#ffa500', '#ff4757'];
+        const count = 50;
+        
+        for (let i = 0; i < count; i++) {
+            setTimeout(() => {
+                const confetti = document.createElement('div');
+                confetti.className = 'mystery-confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-10px';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                confetti.style.height = confetti.style.width;
+                confetti.style.animationDelay = (Math.random() * 0.5) + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 5000);
+            }, i * 30);
+        }
+    }
+    
+    showCongratulations() {
+        if (this.congratulations) {
+            this.congratulations.classList.remove('hidden');
+            
+            // Close button functionality
+            this.congratulations.addEventListener('click', (e) => {
+                if (e.target === this.congratulations) {
+                    this.congratulations.classList.add('hidden');
+                }
+            });
+        }
+    }
+}
+
+// Initialize Mystery Boxes
+let mysteryBoxesController;
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        mysteryBoxesController = new MysteryBoxesController();
+    });
+} else {
+    mysteryBoxesController = new MysteryBoxesController();
+}
+
 // Smooth scroll behavior
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
