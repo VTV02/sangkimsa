@@ -700,10 +700,12 @@ body {
 .mystery-boxes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 30px;
-    max-width: 900px;
+    gap: 40px;
+    max-width: 1000px;
     margin: 0 auto;
-    perspective: 1000px;
+    padding: 20px;
+    align-items: center;
+    justify-items: center;
 }
 
 .mystery-box {

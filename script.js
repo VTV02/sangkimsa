@@ -1125,59 +1125,41 @@ class MysteryBoxesController {
         if (!this.boxesGrid) return;
         
         for (let i = 0; i < this.totalBoxes; i++) {
-            const box = document.createElement('div');
-            box.className = 'mystery-box';
-            box.dataset.index = i;
-            
-            const front = document.createElement('div');
-            front.className = 'mystery-box-front';
-            
-            const back = document.createElement('div');
-            back.className = 'mystery-box-back';
-            
-            const content = document.createElement('div');
-            content.className = 'mystery-box-content';
+            const boxContainer = document.createElement('div');
+            boxContainer.className = 'gift-box-container';
+            boxContainer.dataset.index = i;
             
             const boxData = this.boxContents[i];
             
+            // Create gift box using component
+            let config = {
+                type: boxData.type,
+                onOpened: (type) => {
+                    this.handleBoxOpened(i, type);
+                }
+            };
+            
             if (boxData.type === 'qr') {
-                content.classList.add('qr');
-                content.innerHTML = `
-                    <div class="mystery-qr-code">
-                        <img src="assets/qr/qr-code.png" alt="QR Code">
-                    </div>
-                    <div class="mystery-qr-text">Quét mã này để lì xì cho bé nha ❤️</div>
-                `;
+                config.qrSrc = 'assets/qr/qr-code.png';
+                config.qrText = 'Quét mã này để lì xì cho bé nha ❤️';
             } else if (boxData.type === 'message') {
-                content.classList.add('message');
-                content.innerHTML = `
-                    <div class="heart-emoji">💝</div>
-                    <div>${boxData.content}</div>
-                `;
+                config.content = boxData.content;
             }
             
-            back.appendChild(content);
-            box.appendChild(front);
-            box.appendChild(back);
-            
-            box.addEventListener('click', () => this.handleBoxClick(i, box));
-            
-            this.boxesGrid.appendChild(box);
+            const giftBox = new GiftBox(boxContainer, config);
+            this.boxesGrid.appendChild(boxContainer);
         }
     }
     
-    handleBoxClick(index, boxElement) {
-        if (this.openedBoxes.has(index) || boxElement.classList.contains('opened')) {
+    handleBoxOpened(index, type) {
+        if (this.openedBoxes.has(index)) {
             return;
         }
         
         this.openedBoxes.add(index);
-        boxElement.classList.add('flipping', 'opened');
-        
-        const boxData = this.boxContents[index];
         
         // Check if QR box
-        if (boxData.type === 'qr' && !this.qrFound) {
+        if (type === 'qr' && !this.qrFound) {
             this.qrFound = true;
             setTimeout(() => {
                 this.createConfetti();
@@ -1191,7 +1173,7 @@ class MysteryBoxesController {
         // Uncomment to enable:
         // if (this.qrFound) {
         //     setTimeout(() => {
-        //         document.querySelectorAll('.mystery-box:not(.opened)').forEach(box => {
+        //         document.querySelectorAll('.gift-box-container:not(.opened)').forEach(box => {
         //             box.style.pointerEvents = 'none';
         //             box.style.opacity = '0.5';
         //         });
